@@ -1,0 +1,88 @@
+skk-jisyo.dic
+
+source:
+ download from
+ https://skk-dev.github.io/dict/SKK-JISYO.ML.gz
+
+copyright:
+ from SKK-JISYO.ML.gz
+ ;; Medium-Large size dictionary for SKK system
+ ;;
+ ;; Copyright (C) 1988-1995, 1997, 1999-2006
+ ;; Masahiko Sato <masahiko@kuis.kyoto-u.ac.jp>
+ ;; Hironobu Takahashi <takahasi@tiny.or.jp>,
+ ;; Masahiro Doteguchi, Miki Inooka,
+ ;; Yukiyoshi Kameyama <kameyama@kuis.kyoto-u.ac.jp>,
+ ;; Akihiko Sasaki, Dai Ando, Junichi Okukawa,
+ ;; Katsushi Sato and Nobuhiro Yamagishi
+ ;; Mikio NAKAJIMA <minakaji@osaka.email.ne.jp>
+ ;; SKK Development Team <skk@ring.gr.jp>
+ ;;
+ ;; Maintainer: SKK Development Team <skk@ring.gr.jp>
+ ;; Keywords: japanese
+ ;; Created: April 13, 2003
+ ;;
+ ;; This dictionary is free software; you can redistribute it and/or
+ ;; modify it under the terms of the GNU General Public License as
+ ;; published by the Free Software Foundation; either version 2, or
+ ;; (at your option) any later version.
+ ;;
+ ;; This dictionary is distributed in the hope that it will be useful,
+ ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ ;; General Public License for more details.
+ ;;
+ ;; You should have received a copy of the GNU General Public License
+ ;; along with Daredevil SKK, see the file COPYING.  If not, write to
+ ;; the Free Software Foundation Inc., 51 Franklin St, Fifth Floor,
+ ;; Boston, MA 02110-1301, USA.
+ ;;
+
+comment:
+ convert to skk-jisyo.dic
+ $ zcat SKK-JISYO.ML.gz | iconv -f euc-jp -t utf-8 | tclsh make-dic-from-skkdic.tcl > skk-jisyo.dic
+
+make-dic-from-skkdic.tcl:
+ # generate dic file from SKK-JISYO
+ # string1 /cand1;anno1/cand2;anno2/cand3;anno3/
+ #  |
+ #  v
+ # string1 cand1
+ # string1 cand2
+ # string1 cand3
+ proc split_and_print {line} {
+ 	set fields [split $line]
+ 	# heading
+ 	set left [lindex $fields 0]
+ 	# rest of line
+ 	set right [join [lrange $fields 1 end]]
+ 	# each candidate is separated by "/", split it
+ 	set cands [split $right /]
+ 	foreach cand $cands {
+ 		#puts cand=$cand
+ 		# ignore empty item
+ 		if {$cand eq ""} {
+ 			continue
+ 		}
+ 		# workarounds remove "{" and "}" item
+ 		if {$cand eq "\{"} {
+ 			continue
+ 		}
+ 		if {$cand eq "\}"} {
+ 			continue
+ 		}
+ 		# remove annotation
+ 		set cand [regsub -all {;[^/]*$} $cand {}]
+ 		# puts
+ 		puts "$left $cand"
+ 	}
+ }
+ #----------------------------------------------------------------
+ # main
+ # read from stdin
+ while {[gets stdin line] >= 0} {
+ 	# process non-comment line only
+ 	if {![string match {;*} $line]} {
+ 		split_and_print [split $line " "]
+ 	}
+ }

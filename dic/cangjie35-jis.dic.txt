@@ -1,0 +1,22 @@
+cangjie35-jis.dic
+
+source:
+ download from
+ https://github.com/fcitx/fcitx5-table-extra/tables/cangjie3.txt
+ https://github.com/fcitx/fcitx5-table-extra/tables/cangjie5.txt
+
+copyright: https://github.com/fcitx/fcitx5-table-extra/blob/master/README
+ All the data file is now in public domain.
+
+comment:
+ cangjie3.dic cangjie5.dic
+ remove header and rename to *.dic
+ .
+ cangjie35.dic
+ merge cangjie5.dic and cangjie3.dic
+ $ cat cangjie5.dic cangjie3.dic | awk '!a[$0]++' > cangjie35.dic
+ .
+ cangjie35-jis.dic
+ generated from cangjie35.dic
+ limit to euc-jp characters
+ $ cat cangjie35.dic | iconv -f utf-8 -t euc-jp -c | sed '/^[a-z]* $/d' | iconv -f euc-jp -t utf-8 > cangjie35-jis.dic

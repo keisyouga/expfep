@@ -1,0 +1,62 @@
+expfep
+======
+
+expfep is fep (front end processor) in terminal using [expect](https://core.tcl-lang.org/expect/)
+
+requirement
+===========
+
+  -  [tcl](https://tcl.tk/)
+  -  [expect](https://core.tcl-lang.org/expect/home)
+  -  tput
+
+starpack binary expfep-linux-x86_64 contains tcl and expect.
+
+usage
+=====
+
+run tcl script
+
+    $ tclsh expfep.vfs/main.tcl [-e command]
+
+or run starpack binary file
+
+    $ ./expfep-linux-x86_64 [-e command]
+
+keybindigs
+==========
+
+always
+
+    ^\	toggle fep on/off
+
+fep on state
+
+    M-1	hiragana
+    M-2	katakana
+    M-3	cangjie
+    M-4	skk-jisyo
+
+if has candidate
+
+    ^G	cancel
+    space	commit
+    ^N	next cand
+    ^P	previous cand
+    ^F	next page
+    ^B	previous page
+    ^A	first cand
+    ^E	last cand
+
+configuration
+=============
+
+edit config.tcl
+
+todo
+====
+
+  - show cands in more smart way
+  - custom key bindings
+  - more map, dic setting
+  - bind arrow-key
