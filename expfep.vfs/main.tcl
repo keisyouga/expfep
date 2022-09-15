@@ -447,13 +447,17 @@ proc change_fep_mode {name map dic} {
 # return 0 if do nothing
 proc manage_fep {data} {
 	global fep_info dic
-	switch -exact -- $data "1" {
+	switch -exact -- $data "\0331" {
+		# ESC-1
 		eval $::config(set_mode1)
-	} "2" {
+	} "\0332" {
+		# ESC-2
 		eval $::config(set_mode2)
-	} "3" {
+	} "\0333" {
+		# ESC-3
 		eval $::config(set_mode3)
-	} "4" {
+	} "\0334" {
+		# ESC-4
 		eval $::config(set_mode4)
 	} default {
 		return 0
@@ -549,17 +553,18 @@ proc interact_fep_on {} {
 			}
 			exp_send -- $interact_out(0,string)
 		}
-		-re {[1234]} {
+		-re {\033[1234]} {
+			# ESC-1, ESC-2, ESC-3, ESC-4
 			if {[manage_fep $interact_out(0,string)]} {
 				return
 			}
 			exp_send -- $interact_out(0,string)
 		}
-		-re {\[.*} {
+		-re {\033\[.*} {
 			# CSI sequence
 			exp_send -- $interact_out(0,string)
 		}
-		-re {O.*} {
+		-re {\033O.*} {
 			# SS3 sequence
 			exp_send -- $interact_out(0,string)
 		}
