@@ -341,9 +341,7 @@ proc keyseq_op {data} {
 	}
 
 	switch -exact -- $data {
-		"\033" {
-			clear
-		} "" {
+		"" {
 			clear
 		} " " {
 			commit
@@ -555,6 +553,14 @@ proc interact_fep_on {} {
 			if {[manage_fep $interact_out(0,string)]} {
 				return
 			}
+			exp_send -- $interact_out(0,string)
+		}
+		-re {\[.*} {
+			# CSI sequence
+			exp_send -- $interact_out(0,string)
+		}
+		-re {O.*} {
+			# SS3 sequence
 			exp_send -- $interact_out(0,string)
 		}
 	}
