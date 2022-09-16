@@ -555,17 +555,26 @@ proc interact_fep_on {} {
 		}
 		-re {\033[1234]} {
 			# ESC-1, ESC-2, ESC-3, ESC-4
+			# used for manage fep key
 			if {[manage_fep $interact_out(0,string)]} {
 				return
 			}
+			# send to current process
 			exp_send -- $interact_out(0,string)
 		}
 		-re {\033\[.*} {
 			# CSI sequence
+			# send to current process
 			exp_send -- $interact_out(0,string)
 		}
 		-re {\033O.*} {
 			# SS3 sequence
+			# send to current process
+			exp_send -- $interact_out(0,string)
+		}
+		-re {\033.} {
+			# rest of ESC-keys
+			# send to current process
 			exp_send -- $interact_out(0,string)
 		}
 	}
