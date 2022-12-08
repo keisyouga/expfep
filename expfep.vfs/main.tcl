@@ -578,7 +578,7 @@ proc interact_fep_on {} {
 			exp_send -- $interact_out(0,string)
 		}
 		timeout 9 {
-			return			
+			return
 		}
 	}
 	# puts "interact_fep_on: end"
@@ -594,7 +594,7 @@ proc interact_fep_off {} {
 			return
 		}
 		timeout 9 {
-			return			
+			return
 		}
 	}
 	# puts "interact_fep_off: end"
