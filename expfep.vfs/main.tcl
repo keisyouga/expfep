@@ -39,7 +39,7 @@ set work_dir [file dirname $script_dir]
 cd $work_dir
 
 set ::APP_NAME "expfep"
-set ::VERSION 0.1
+set ::VERSION v1.0.2
 
 ################################################################
 package require Expect
