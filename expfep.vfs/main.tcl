@@ -577,6 +577,9 @@ proc interact_fep_on {} {
 			# send to current process
 			exp_send -- $interact_out(0,string)
 		}
+		"\000" {
+			exp_send -- "\000"
+		}
 		timeout 9 {
 			return
 		}
@@ -592,6 +595,9 @@ proc interact_fep_off {} {
 		$::config(active_key) {
 			set fep_info(enabled) 1
 			return
+		}
+		"\000" {
+			exp_send -- "\000"
 		}
 		timeout 9 {
 			return
